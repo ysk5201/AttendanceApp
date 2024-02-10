@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   # localhost:3000/posts/new
   # localhost:3000/posts/create
   resources :posts, only: [:index, :new, :create]
+  get '/posts/all_posts', to: 'posts#all_posts', as: 'all_posts'
 end
