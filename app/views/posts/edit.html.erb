@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>勤怠記録編集</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    #error_message {
+      color: red;
+    }
+    .form-check-input {
+      width: 30px;
+      height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">勤怠記録編集</h1>
+
+    <!-- バリデーションのエラーメッセージを出力 -->
+    <% if @post.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+            <ul>
+                <% @post.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <%= form_with model: @post, class: "mb-4", id: "post-form" do |form| %>
+      <div class="form-group">
+        <%= form.label :employee_id, "社員番号" %>
+        <%= form.text_field :employee_id, class: "form-control", placeholder: "社員番号を入力してください" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :status, "出勤/退勤" %><br>
+        <div class="form-check form-check-inline">
+          <%= form.radio_button :status, "出勤", onclick: "$('#break_time_field').hide();", class: "form-check-input" %>
+          <%= form.label :status, "出勤", class: "form-check-label" %>
+        </div>
+        <div class="form-check form-check-inline">
+          <%= form.radio_button :status, "退勤", onclick: "$('#break_time_field').show();", class: "form-check-input" %>
+          <%= form.label :status, "退勤", class: "form-check-label" %>
+        </div>
+      </div>
+
+      <div class="form-group" id="break_time_field" style="display: none;">
+        <%= form.label :break_time, "休憩時間（時間：分）" %>
+        <%= form.time_field :break_time, class: "form-control", value: "01:00" %>
+      </div>
+
+      <div class="text-center">
+        <%= form.submit "更新", class: "btn btn-primary", id: "submit-button" %>
+        <button type="button" class="btn btn-secondary" id="reset-button">リセット</button>
+      </div>
+      
+    <!-- <div class="text-center" id="error_message" style="display: none;">入力に不備があります</div> -->
+    
+    <% end %>
+    
+    <%= link_to "これまでの勤怠履歴を見る", all_posts_path %>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script>
+    // リセットボタンが押されたときの操作
+    $('#reset-button').click(function() {
+        $('#post-form')[0].reset();
+        $('#break_time_field').hide();
+        $('#error_message').hide();
+        console.log("リセットされました"); // リセットが行われた際のログ出力
+    });
+
+    // ページ読み込み時にもチェック
+    $('input[type="radio"][name="posts[status]"]').each(function() {
+        if ($(this).is(":checked") && $(this).val() == "退勤") {
+            $('#break_time_field').show();
+        }
+    });
+  </script>
+</body>
+</html>

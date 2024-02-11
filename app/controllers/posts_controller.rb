@@ -37,6 +37,29 @@ class PostsController < ApplicationController
         @posts = Post.order(created_at: :desc)
     end
 
+    def edit
+        # 変更したい記録のidを見つける
+        @post = Post.find(params[:id])
+    end
+
+    def update
+        # 変更したい記録のidを見つける
+        @post = Post.find(params[:id])
+        if @post.update(post_params)
+            flash[:success] = "勤怠登録を更新しました"
+            redirect_to all_posts_path
+        else
+            render :edit
+        end
+    end
+
+    def destroy
+        # 削除したい記録のidを見つける
+        @post = Post.find(params[:id])
+        @post.destroy
+        redirect_to all_posts_path
+    end
+
     private
 
     def post_params

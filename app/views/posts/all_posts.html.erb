@@ -41,6 +41,13 @@
         top: 0;
         left: 0;
     }
+    /* 編集・削除ボタンを横並びにする */
+    .edit-delete-buttons {
+      display: flex;
+    }
+    .edit-delete-buttons .btn {
+      margin-right: 5px;
+    }
   </style>
 </head>
 <body>
@@ -55,6 +62,7 @@
           <th>出勤/退勤</th>
           <th>休憩時間</th>
           <th>登録日時</th>
+          <th>編集・削除</th>
         </tr>
       </thead>
       <tbody>
@@ -62,8 +70,18 @@
           <tr>
             <td><%= post.employee_id %></td>
             <td><%= post.status %></td>
-            <td><%= post.break_time.strftime('%H') %>時間<%= post.break_time.strftime('%M') %>分</td>
+            <% if post.status == "出勤" %>
+              <td></td> <!-- 出勤の場合は空のセルを表示 -->
+            <% else %>
+              <!-- 退勤の場合は休憩時間を表示 -->
+              <td><%= post.break_time.strftime('%H') %>時間<%= post.break_time.strftime('%M') %>分</td>
+            <% end %>
             <td><%= post.created_at.in_time_zone('Tokyo').strftime('%Y年%m月%d日 %H時%M分') %></td>
+            <!-- 編集ボタンと削除ボタンを追加 -->
+            <td class="edit-delete-buttons">
+              <%= link_to "編集", edit_post_path(post), class: "btn btn-primary btn-sm mr-1" %>
+              <%= button_to "削除", post, { method: :delete, form: { data: { turbo_confirm: "本当に削除しますか？" } }, class: "btn btn-danger btn-sm" } %>
+            </td>
           </tr>
         <% end %>
       </tbody>
