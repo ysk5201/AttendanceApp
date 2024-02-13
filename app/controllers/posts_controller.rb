@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
     # before_action :authenticate_user!, except: [:index] # ログインが必要なアクションに対して認証
     # before_action :authorize_admin, only: [:new, :index_admin] # 管理者のみがアクセス可能なアクションに対して認可
+    before_action :logged_in_user, only:[:edit, :update, :destroy]
     # indexにアクセスが来た時どうするのか
     def index
         # Post modelからDBにアクセス可能にする

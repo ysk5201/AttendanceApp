@@ -17,6 +17,15 @@
   <div class="container mt-5">
     <h1 class="mb-4">勤怠登録</h1>
 
+    <div class="d-flex justify-content-end mb-3"> <!-- 右寄せに変更 -->
+    <!-- ログイン・ログアウトボタンの表示 -->
+    <% if logged_in? %>
+        <%= link_to "ログアウト", logout_path, data: { "turbo-method": :delete }, class: "btn btn-primary" %>
+    <% else %>
+        <%= link_to "ログイン", login_path, class: "btn btn-primary", role: "button" %>
+    <% end %>
+    </div>
+
     <!-- バリデーションのエラーメッセージを出力 -->
     <% if @post.errors.any? %>
         <div id="error_explanation">
@@ -62,7 +71,20 @@
     
     <% end %>
     
-    <%= link_to "これまでの勤怠履歴を見る", all_posts_path %>
+    <% if current_user&.admin? %>
+    <div class="btn-group mr-2" role="group" aria-label="ボタングループ">
+      <%= button_to "これまでの勤怠履歴を見る", all_posts_path, method: :get, class: "btn btn-primary" %>
+    </div>
+  
+    <div class="btn-group mr-2" role="group" aria-label="ボタングループ">
+      <%= button_to "従業員情報一覧を見る", users_path, method: :get, class: "btn btn-primary" %>
+    </div>
+    
+    <div class="btn-group" role="group" aria-label="ボタングループ">
+      <%= button_to "新規従業員登録", new_user_path, method: :get, class: "btn btn-primary" %>
+    </div>
+    <% end %>
+
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

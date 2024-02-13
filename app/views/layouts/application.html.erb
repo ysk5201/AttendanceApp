@@ -8,22 +8,47 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <style>
+      /* フラッシュメッセージの親要素のスタイル */
+      .flash-container {
+        position: fixed;
+        top: 30px; /* 画面上部からの距離を調整 */
+        left: 50%; /* 画面の中央に配置するために左側を50%に設定 */
+        transform: translateX(-50%); /* 中央揃えのために左側をマイナス50%にシフト */
+        width: 300px; /* フラッシュメッセージの幅を設定 */
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .flash {
+        margin-bottom: 10px; /* フラッシュメッセージ間の余白を設定 */
+      }
+      .success {
+        color: green;
+      }
+      .error {
+        color: red;
+      }
+    </style>
   </head>
 
   <body>
-    <% if flash[:success] %>
-      <div class="flash success">
-        <%= flash[:success] %>
-      </div>
-    <% end %>
+    <!-- フラッシュメッセージの親要素 -->
+    <div class="flash-container">
+      <% if flash[:success] %>
+        <div class="flash success">
+          <%= flash[:success] %>
+        </div>
+      <% end %>
 
-    <% if flash[:error] %>
-      <div class="flash error">
-        <%= flash[:error] %>
-      </div>
-    <% end %>
+      <% if flash[:error] %>
+        <div class="flash error">
+          <%= flash[:error] %>
+        </div>
+      <% end %>
+    </div>
 
     <%= yield %>
-
   </body>
 </html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* カスタムCSS */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa; /* 背景色を設定 */
+    }
+    .container {
+      margin-top: 50px;
+      text-align: center; /* 中央揃え */
+    }
+    h1 {
+      color: #007bff; /* タイトルの色を設定 */
+      margin-bottom: 30px;
+    }
+    form {
+      margin: auto;
+      max-width: 400px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      border-radius: 5px;
+    }
+    form label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    form input[type="email"],
+    form input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    form input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    form input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    .signup-link {
+      display: block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .signup-link:hover {
+      text-decoration: underline;
+    }
+    .return-button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ログイン</h1>
+
+    <%= form_for(:session, url: login_path) do |f| %>
+      <%= f.label :email %>
+      <%= f.email_field :email, class: "form-control" %><div class="form-group">
+      <%= form_for(:session, url: login_path) do |f| %>
+        <%= f.label :password %>
+        <%= f.password_field :password, class: "form-control", id: "password-field" %>
+        <!-- パスワード表示切り替えボタン -->
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px; height: 40px"> <!-- 横並びにするためのdiv -->
+            <input type="checkbox" id="show-password" style="margin-right: 5px;">
+            <label for="show-password" style="margin-bottom: 0;">パスワード表示/非表示</label>
+        </div>
+        <!-- JavaScriptコードを直接埋め込む -->
+        <script>
+          document.getElementById("show-password").addEventListener("change", function() {
+            var passwordField = document.getElementById("password-field");
+            if (passwordField.type === "password") {
+              passwordField.type = "text";
+            } else {
+              passwordField.type = "password";
+            }
+          });
+        </script>
+      <% end %>
+      <%= f.submit "ログイン", class: "btn btn-primary btn-block" %>
+    <% end %>
+
+    <%= link_to "アカウントを新規作成する", new_user_path, class: "signup-link" %>
+    <!-- <%= link_to "パスワードを忘れた方" %> -->
+
+    <!-- 勤怠登録画面に戻るボタン -->
+    <a href="<%= new_post_path %>" class="btn btn-primary return-button col-auto">勤怠登録画面に戻る</a>
+    
+  </div>
+</body>
+</html>

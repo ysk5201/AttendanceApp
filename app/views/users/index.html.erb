@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登録者一覧</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* カスタムCSS */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa; /* 背景色を設定 */
+    }
+    .container {
+      margin-top: 50px;
+    }
+    h1 {
+      color: #007bff; /* タイトルの色を設定 */
+      margin-bottom: 30px;
+    }
+    th {
+      background-color: #007bff; /* テーブルのヘッダーの背景色を設定 */
+      color: #fff; /* テーブルのヘッダーの文字色を設定 */
+    }
+    tbody tr:nth-child(odd) {
+      background-color: #f8f9fa; /* 奇数行の背景色を設定 */
+    }
+    tbody tr:nth-child(even) {
+      background-color: #e9ecef; /* 偶数行の背景色を設定 */
+    }
+    /* ログインボタン */
+    #login-button {
+      #margin-top: 20px;
+    }
+    /* スクロールしても見出しは固定 */
+    .table-sticky__title {
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+    /* 編集・削除ボタンを横並びにする */
+    .edit-delete-buttons {
+      display: flex;
+    }
+    .edit-delete-buttons .btn {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p style="color: green;"><%= notice %></p>
+    <h1>登録者一覧</h1>
+    
+    <div class="scroll_area" style="width:100%;max-height:500px;overflow-x:auto;">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>社員番号</th>
+            <th>名前</th>
+            <th>Email</th>
+            <th>管理者</th>
+            <th>編集・削除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= user.employee_id %></td>
+              <td><%= user.name %></td>
+              <td><%= user.email %></td>
+              <td><%= user.admin ? 'Yes' : 'No' %></td>
+              <!-- 編集ボタンと削除ボタンを追加 -->
+              <td class="edit-delete-buttons">
+                <%= link_to "編集", edit_user_path(user), class: "btn btn-primary btn-sm mr-1" %>
+                <%= button_to "削除", user, { method: :delete, form: { data: { turbo_confirm: "本当に削除しますか？" } }, class: "btn btn-danger btn-sm" } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-start align-items-center" role="group">
+      <!-- 勤怠登録画面に戻るボタン -->
+      <a href="<%= new_post_path %>" class="btn btn-primary">勤怠登録画面に戻る</a>
+      <!-- ログインボタン -->
+      <!-- <a href="/login" class="btn btn-primary mr-2" id="login-button">ログインページに移動</a> -->
+    </div> 
+  </div>
+</body>
+</html>
